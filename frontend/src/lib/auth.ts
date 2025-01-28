@@ -40,6 +40,17 @@ export const getCurrentUser = (): User | null => {
   return null;
 };
 
+interface RegisterData {
+  name: string;
+  email: string;
+  password: string;
+  role: 'admin' | 'teacher' | 'student';
+  department?: string;
+  studentId?: string;
+  year?: number;
+  googleCalendarId?: string;
+}
+
 
 export const register = async (userData: RegisterData) => {
   try {
