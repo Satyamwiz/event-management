@@ -54,6 +54,8 @@ interface RegisterData {
 
 export const register = async (userData: RegisterData) => {
   try {
+    console.log("hello");
+    
     const { data } = await axios.post('/api/users/register', userData);
     return data;
   } catch (error) {
