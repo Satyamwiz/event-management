@@ -3,27 +3,27 @@ import mongoose from 'mongoose';
 const eventSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    // required: true,
     trim: true,
     minlength: 3,
     maxlength: 100
   },
   description: {
     type: String,
-    required: true,
+    // required: true,
     trim: true,
     minlength: 10,
     maxlength: 1000
   },
   organizingBody: {
     type: String,
-    required: true,
+    // required: true,
     trim: true
   },
   facultyInCharge: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    // required: true
   },
   facultyMembers: [{
     type: mongoose.Schema.Types.ObjectId,
@@ -36,32 +36,32 @@ const eventSchema = new mongoose.Schema({
   }],
   department: {
     type: String,
-    required: true
+    // required: true
   },
   venue: {
     type: String,
-    required: true
+    // required: true
   },
   capacity: {
     type: Number,
-    required: true,
+    // required: true,
     min: 1
   },
   registrationDeadline: {
     type: Date,
-    required: true
+    // required: true
   },
   bannerUrl: {
     type: String,
-    required: true
+    // required: true
   },
   startDate: {
     type: Date,
-    required: true
+    // required: true
   },
   endDate: {
     type: Date,
-    required: true
+    // required: true
   },
   googleCalendarEventId: {
     type: String

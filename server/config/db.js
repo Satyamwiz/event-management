@@ -13,13 +13,14 @@ const logger = winston.createLogger({
 const connectDB = async () => {
   try {
     // Replace with your MongoDB connection string
-    // const mongoURI = "mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<dbname>?retryWrites=true&w=majority";
-    const mongoURI = process.env.MONGODB_URI;
+     const mongoURI = "mongodb+srv://sajoshi06:ghost@cluster0.xlzjmwe.mongodb.net/face_recognition?retryWrites=true&w=majority&appName=Cluster0";
+    // const mongoURI = process.env.MONGODB_URI;
     
-    await mongoose.connect(mongoURI);
-    logger.info('MongoDB Connected...');
+    const resposne = await mongoose.connect(mongoURI);
+    console.log(resposne)
+    // logger.info('MongoDB Connected...');
   } catch (err) {
-    logger.error('MongoDB connection error:', err.message);
+    // logger.error('MongoDB connection error:', err.message);
     process.exit(1);
   }
 };

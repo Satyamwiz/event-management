@@ -6,7 +6,7 @@ import connectDB from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
 import eventRoutes from './routes/eventRoutes.js';
 import winston from 'winston';
-
+import mongoose from 'mongoose';
 dotenv.config();
 
 const app = express();
@@ -43,6 +43,15 @@ app.use((err, req, res, next) => {
 
 // Connect to MongoDB
 // connectDB();
+const mongoURI = "mongodb+srv://eventadmin:sohamsatyam@cluster0.urkr0.mongodb.net/EMS?retryWrites=true&w=majority&appName=Cluster0";
+// const MONGO_URL = "mongodb+srv://sajoshi06:ghost@cluster0.xlzjmwe.mongodb.net/face_recognition?retryWrites=true&w=majority&appName=Cluster0"
+
+mongoose.connect(mongoURI).then(()=>{
+  console.log("Connected to database");
+  
+}).catch((e)=>{
+  console.log(e)
+})
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
