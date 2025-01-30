@@ -13,17 +13,18 @@ const logger = winston.createLogger({
 
 // Get all events
 export const getEvents = async (req, res) => {
-  try {
-    const events = await Event.find()
-      .populate('facultyInCharge', 'name email')
-      .populate('facultyMembers', 'name email')
-      .populate('registeredParticipants.user', 'name email');
+  // try {
+  //   const events = await Event.find()
+  //     .populate('facultyInCharge', 'name email')
+  //     .populate('facultyMembers', 'name email')
+  //     .populate('registeredParticipants.user', 'name email');
     
-    res.json(events);
-  } catch (error) {
-    logger.error('Get events error:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
+  //   res.json(events);
+  // } catch (error) {
+  //   logger.error('Get events error:', error);
+  //   res.status(500).json({ message: 'Server error' });
+  // }
+  res.send("djd");
 };
 
 // Get single event
