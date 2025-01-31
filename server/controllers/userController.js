@@ -174,7 +174,7 @@ export const updateUserProfile = async (req, res) => {
 
 export const getUsers = async (req, res) => {
   try {
-    const users = await User.find({}).select('-password');
+    const users = await User.find({role:"teacher"}).select('name email department');
     res.json(users);
   } catch (error) {
     logger.error('Get users error:', error);

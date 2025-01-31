@@ -29,11 +29,7 @@ const eventSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   }],
-  targetAudience: [{
-    type: String,
-    enum: ['all', 'students', 'teachers'],
-    default: ['all']
-  }],
+  
   department: {
     type: String,
     // required: true
@@ -47,10 +43,7 @@ const eventSchema = new mongoose.Schema({
     // required: true,
     min: 1
   },
-  registrationDeadline: {
-    type: Date,
-    // required: true
-  },
+ 
   bannerUrl: {
     type: String,
     // required: true
@@ -68,7 +61,7 @@ const eventSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['draft', 'published', 'cancelled', 'completed'],
+    // enum: ['draft', 'published', 'cancelled', 'completed'],
     default: 'draft'
   },
   registeredParticipants: [{

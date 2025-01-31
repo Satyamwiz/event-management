@@ -58,6 +58,7 @@ const AdminEvents: React.FC = () => {
       try {
         const response = await axios.get<Faculty[]>(`${origin}/api/users`);
         setFacultyList(response.data);
+        console.log(response.data)
       } catch (error) {
         console.error('Failed to fetch faculty members:', error);
       }

@@ -1,4 +1,5 @@
 import Event from '../models/Event.js';
+import User from '../models/user.js';
 // import { createCalendarEvent, updateCalendarEvent, deleteCalendarEvent } from '../config/googleCalendar.js';
 import winston from 'winston';
 
@@ -60,64 +61,64 @@ export const getEventById = async (req, res) => {
 // Create event
 export const createEvent = async (req, res) => {
   try {
+    console.log("inside");
     const { 
       name, 
       description,
       organizingBody, 
       facultyInCharge, 
       facultyMembers, 
-      targetAudience,
-      department,
+      
       venue,
-      capacity,
-      registrationDeadline,
+      
+     
       startDate, 
       endDate,
       status 
     } = req.body;
-
+    console.log("ok")
     // Validate dates
-    if (new Date(endDate) <= new Date(startDate)) {
-      return res.status(400).json({ message: 'End date must be after start date' });
-    }
+    // if (new Date(endDate) <= new Date(startDate)) {
+    //   return res.status(400).json({ message: 'End date must be after start date' });
+    // }
 
-    if (new Date(registrationDeadline) >= new Date(startDate)) {
-      return res.status(400).json({ message: 'Registration deadline must be before start date' });
-    }
+    // if (new Date(registrationDeadline) >= new Date(startDate)) {
+    //   return res.status(400).json({ message: 'Registration deadline must be before start date' });
+    // }
 
-    let bannerUrl = '';
-    if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.path);
-      bannerUrl = result.secure_url;
-    } else {
-      return res.status(400).json({ message: 'Banner image is required' });
-    }
+    // let bannerUrl = '';
+    // if (req.file) {
+    //   const result = await cloudinary.uploader.upload(req.file.path);
+    //   bannerUrl = result.secure_url;
+    // } else {
+    //   return res.status(400).json({ message: 'Banner image is required' });
+    // }
 
     // Create Google Calendar event
-    const calendarEventId = await createCalendarEvent({
-      name,
-      description,
-      venue,
-      startDate,
-      endDate
-    });
+    // const calendarEventId = await createCalendarEvent({
+    //   name,
+    //   description,
+    //   venue,
+    //   startDate,
+    //   endDate
+    // });
+    const teacher = await User.findOne({ name:facultyInCharge });
 
+console.log(teacher);
     const event = await Event.create({
       name,
       description,
       organizingBody,
-      facultyInCharge,
-      facultyMembers: facultyMembers ? JSON.parse(facultyMembers) : [],
-      targetAudience,
-      department,
+      facultyInCharge:teacher._id,
+
+      
+    
       venue,
-      capacity,
-      registrationDeadline,
-      bannerUrl,
+      
+      
       startDate,
       endDate,
-      status,
-      googleCalendarEventId: calendarEventId
+      status
     });
 
     const populatedEvent = await Event.findById(event._id)

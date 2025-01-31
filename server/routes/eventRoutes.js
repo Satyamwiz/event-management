@@ -21,9 +21,10 @@ router.use(protect);
 
 
 // Routes requiring admin or faculty privileges
-router.post('/', authorize(['admin', 'teacher']), upload.single('banner'), createEvent);
+// router.post('/', authorize(['admin', 'teacher']), upload.single('banner'), createEvent);
 router.put('/:id', authorize(['admin', 'teacher']), upload.single('banner'), updateEvent);
 router.delete('/:id', authorize(['admin']), deleteEvent);
+router.post('/', createEvent);
 
 
 router.get('/:eventId/stats', authorize(['admin', 'teacher']), getEventStats);
