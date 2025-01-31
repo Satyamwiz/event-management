@@ -1,8 +1,15 @@
 import React,{useEffect} from 'react';
 import { Routes, Route } from 'react-router-dom';
-
+import { Navigate } from 'react-router-dom';
+import { getCurrentUser } from '../../../lib/auth.ts';
 
 const AdminDashboard: React.FC = () => {
+  const user = getCurrentUser();
+  console.log(user);
+  // Add role check
+  if (user?.role !== 'admin') {
+    return <Navigate to="/login" replace />;
+  }
   return (
     <div className="space-y-6">
       <div>

@@ -1,7 +1,14 @@
 import React from 'react';
 import { Calendar, Users, ClipboardList } from 'lucide-react';
-
+import { Navigate } from 'react-router-dom';
+import { getCurrentUser } from '../../../lib/auth.ts';
 const TeacherDashboard: React.FC = () => {
+  const user = getCurrentUser();
+    console.log(user);
+    // Add role check
+    if (user?.role !== 'teacher') {
+      return <Navigate to="/login" replace />;
+    }
   return (
     <div className="space-y-6">
       <div>
