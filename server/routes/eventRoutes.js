@@ -17,7 +17,7 @@ router.get('/', getEvents);
 router.get('/:id', getEventById);
 
 // Protected routes
-router.use(protect);
+// router.use(protect);
 
 
 // Routes requiring admin or faculty privileges

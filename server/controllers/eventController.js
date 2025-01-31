@@ -76,6 +76,7 @@ export const createEvent = async (req, res) => {
       endDate,
       status 
     } = req.body;
+    console.log(req.body);
     console.log("ok")
     // Validate dates
     // if (new Date(endDate) <= new Date(startDate)) {
@@ -102,7 +103,8 @@ export const createEvent = async (req, res) => {
     //   startDate,
     //   endDate
     // });
-    const teacher = await User.findOne({ name:facultyInCharge });
+    console.log(facultyInCharge);
+    const teacher = await User.findOne({ email:facultyInCharge });
 
 console.log(teacher);
     const event = await Event.create({
@@ -121,11 +123,11 @@ console.log(teacher);
       status
     });
 
-    const populatedEvent = await Event.findById(event._id)
-      .populate('facultyInCharge', 'name email')
-      .populate('facultyMembers', 'name email');
-
-    res.status(201).json(populatedEvent);
+    // const populatedEvent = await Event.findById(event._id)
+    //   .populate('facultyInCharge', 'name email')
+    //   .populate('facultyMembers', 'name email');
+    res.status(200).json({message:true});
+    // res.status(201).json(populatedEvent);
   } catch (error) {
     logger.error('Create event error:', error);
     res.status(500).json({ message: 'Server error' });

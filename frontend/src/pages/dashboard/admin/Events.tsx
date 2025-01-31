@@ -68,20 +68,33 @@ const AdminEvents: React.FC = () => {
     fetchFacultyMembers();
   }, []);
 
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  //   const { name, value, type } = e.target;
+  //   if (type === 'select-one' || type === 'select-multiple') {
+  //     const selectElement = e.target as HTMLSelectElement;
+  //     const selectedValues = Array.from(selectElement.selectedOptions, option => option.value);
+  //     setNewEvent({
+  //       ...newEvent,
+  //       [name]: selectedValues.length ? selectedValues : value,
+  //     });
+  //   } else {
+  //     setNewEvent({
+  //       ...newEvent,
+  //       [name]: value,
+  //     });
+  //   }
+  // };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
-    if (type === 'select-one' || type === 'select-multiple') {
+    const { name, value, type, multiple } = e.target;
+    
+    if (type === 'select-one') {
+      setNewEvent({ ...newEvent, [name]: value });
+    } else if (multiple) {
       const selectElement = e.target as HTMLSelectElement;
       const selectedValues = Array.from(selectElement.selectedOptions, option => option.value);
-      setNewEvent({
-        ...newEvent,
-        [name]: selectedValues.length ? selectedValues : value,
-      });
+      setNewEvent({ ...newEvent, [name]: selectedValues });
     } else {
-      setNewEvent({
-        ...newEvent,
-        [name]: value,
-      });
+      setNewEvent({ ...newEvent, [name]: value });
     }
   };
 
@@ -91,8 +104,10 @@ const AdminEvents: React.FC = () => {
     }
   };
 
-  const handleAddEvent = async () => {
+  const handleAddEvent = async (e) => {
     try {
+      e.preventDefault(); // Prevent form submission
+
       const formData = new FormData();
       formData.append('name', newEvent.name);
       formData.append('description', newEvent.description);
@@ -103,16 +118,22 @@ const AdminEvents: React.FC = () => {
       formData.append('status', newEvent.status);
       formData.append('facultyInCharge', newEvent.facultyInCharge);
       formData.append('facultyMembers', JSON.stringify(newEvent.facultyMembers));
+      console.log(formData);
 
-      if (banner) {
-        formData.append('banner', banner);
-      }
-
-      const response = await axios.post(`${origin}/api/events`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+      // if (banner) {
+      //   formData.append('banner', banner);
+      // }
+      console.log("hehe");
+      console.log(formData);
+      console.log(newEvent)
+      const response = await axios.post(`${origin}/api/events`, newEvent, {
+        // headers: { 'Content-Type': 'multipart/form-data' }
       });
+        console.log("sendede");
 
-      if (response.status === 200) {
+      if (response.status == 200 || response.data.message) {
+        window.location.reload();
+
         setEvents([...events, response.data]);
         setShowModal(false);
         setNewEvent({
@@ -305,7 +326,7 @@ const AdminEvents: React.FC = () => {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {events.map(event => (
-                <tr key={event.id}>
+                <tr key={event.venue}>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{event.name}</td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{event.organizingBody}</td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{event.venue}</td>
