@@ -264,7 +264,44 @@ const AdminEvents: React.FC = () => {
           </select>
         </div>
 
+        {/* Replace the existing facultyMembers select with this checkbox group */}
         <div>
+  <label className="block text-sm font-medium text-gray-700">Faculty Members</label>
+  {/* Scrollable container */}
+  <div className="mt-2 space-y-2 max-h-40 overflow-y-auto border border-gray-300 rounded-md p-2">
+    {facultyList.map(faculty => (
+      <div key={faculty.email} className="relative flex items-start">
+        <div className="flex h-6 items-center">
+          <input
+            type="checkbox"
+            id={`faculty-${faculty.email}`}
+            value={faculty.email}
+            checked={newEvent.facultyMembers.includes(faculty.email)}
+            onChange={(e) => {
+              const email = e.target.value;
+              setNewEvent(prev => ({
+                ...prev,
+                facultyMembers: e.target.checked
+                  ? [...prev.facultyMembers, email]
+                  : prev.facultyMembers.filter(f => f !== email)
+              }));
+            }}
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"
+          />
+        </div>
+        <div className="ml-3 text-sm leading-6">
+          <label htmlFor={`faculty-${faculty.email}`} className="font-medium text-gray-900">
+            {faculty.name}
+          </label>
+          <p className="text-gray-500">{faculty.department}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+
+        {/* <div>
           <label htmlFor="facultyMembers" className="block text-sm font-medium text-gray-700">Faculty Members</label>
           <select
             id="facultyMembers"
@@ -280,7 +317,7 @@ const AdminEvents: React.FC = () => {
               </option>
             ))}
           </select>
-        </div>
+        </div> */}
 
         <div>
           <label htmlFor="banner" className="block text-sm font-medium text-gray-700">Event Banner</label>
