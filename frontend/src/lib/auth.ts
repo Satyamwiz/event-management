@@ -1,45 +1,11 @@
-import { User } from '@/types/auth';
 import axios from 'axios';
-// Mock admin user for testing
-const MOCK_ADMIN: User = {
-  id: '1',
-  name: 'Admin User',
-  email: 'admin@example.com',
-  role: 'ADMIN',
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
-};
-
-// Mock authentication
-let currentUser: User | null = null;
-
-export const login = async (email: string, password: string): Promise<User> => {
-  // For demo purposes, only allow the mock admin to login
-  if (email === MOCK_ADMIN.email && password === 'admin123') {
-    currentUser = MOCK_ADMIN;
-    localStorage.setItem('user', JSON.stringify(MOCK_ADMIN));
-    return MOCK_ADMIN;
-  }
-  throw new Error('Invalid credentials');
-};
+import { User } from '@/types/auth';
 
 
+// Define the API base URL
+const API_URL = '/api/users';
 
-export const logout = () => {
-  currentUser = null;
-  localStorage.removeItem('user');
-};
-
-export const getCurrentUser = (): User | null => {
-  if (currentUser) return currentUser;
-  const stored = localStorage.getItem('user');
-  if (stored) {
-    currentUser = JSON.parse(stored);
-    return currentUser;
-  }
-  return null;
-};
-
+// Interface for registration data
 interface RegisterData {
   name: string;
   email: string;
@@ -51,17 +17,47 @@ interface RegisterData {
   googleCalendarId?: string;
 }
 
+// Login function
+export const login = async (email: string, password: string): Promise<User> => {
+  const { data } = await axios.post(`${API_URL}/login`, { email, password }, { withCredentials: true });
+  localStorage.setItem('user', JSON.stringify(data));
+  return data;
+};
 
-export const register = async (userData: RegisterData) => {
-  try {
-    console.log("hello");
-    
-    const { data } = await axios.post('/api/users/register', userData);
-    return data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      throw error;
-    }
-    throw new Error('Registration failed');
-  }
+// Logout function
+export const logout = async (): Promise<void> => {
+ 
+  await axios.post(`${API_URL}/logout`, {}, { withCredentials: true });
+  localStorage.removeItem('user');
+
+};
+
+// Get current user function
+export const getCurrentUser = (): User | null => {
+  const storedUser = localStorage.getItem('user');
+  return storedUser ? JSON.parse(storedUser) : null;
+};
+
+// Register function
+export const register = async (userData: RegisterData): Promise<User> => {
+  const { data } = await axios.post(`${API_URL}/register`, userData, { withCredentials: true });
+  return data;
+};
+
+// Get user profile
+export const getUserProfile = async (): Promise<User> => {
+  const { data } = await axios.get(`${API_URL}/profile`, { withCredentials: true });
+  return data;
+};
+
+// Update user profile
+export const updateUserProfile = async (userData: Partial<User>): Promise<User> => {
+  const { data } = await axios.put(`${API_URL}/profile`, userData, { withCredentials: true });
+  return data;
+};
+
+// Get all users (admin only)
+export const getUsers = async (): Promise<User[]> => {
+  const { data } = await axios.get(API_URL, { withCredentials: true });
+  return data;
 };

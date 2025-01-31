@@ -104,16 +104,16 @@ export const loginUser = async (req, res) => {
     if (!user || !(await user.matchPassword(password))) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
-
+    console.log("echeck1");
     const token = generateToken(user._id);
-
+    console.log("reached at 1");
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       maxAge: 30 * 24 * 60 * 60 * 1000
     });
-
+    console.log("reached2")
     res.json({
       _id: user._id,
       name: user.name,
@@ -174,7 +174,7 @@ export const updateUserProfile = async (req, res) => {
 
 export const getUsers = async (req, res) => {
   try {
-    const users = await UserModel.find({ role: 'teacher' }).select('name email department ');
+    const users = await User.find({}).select('-password');
     res.json(users);
   } catch (error) {
     logger.error('Get users error:', error);

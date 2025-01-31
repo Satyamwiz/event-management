@@ -14,7 +14,7 @@ interface RegisterData {
   department?: string;
   studentId?: string;
   year?: number;
-  googleCalendarId?: string;
+ 
 }
 
 const Register: React.FC = () => {
@@ -115,11 +115,6 @@ const Register: React.FC = () => {
           </>
         )}
 
-        <Input
-          label="Google Calendar ID (Optional)"
-          {...register('googleCalendarId')}
-          error={errors.googleCalendarId?.message}
-        />
 
         <Button 
           type="submit" 
