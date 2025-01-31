@@ -103,16 +103,37 @@ export const createEvent = async (req, res) => {
     //   startDate,
     //   endDate
     // });
-    console.log(facultyInCharge);
-    const teacher = await User.findOne({ email:facultyInCharge });
+//     console.log(facultyInCharge);
+//     const teacher = await User.findOne({ email:facultyInCharge });
 
-console.log(teacher);
+// console.log(teacher);
+
+const facultyInChargeUser = await User.findOne({ email: facultyInCharge });
+    if (!facultyInChargeUser) {
+      return res.status(400).json({ message: 'Invalid faculty in charge' });
+    }
+
+    // Convert faculty member emails to ObjectIds
+    const facultyMemberUsers = await User.find({
+      email: { $in: facultyMembers }
+      
+    });
+
+    if (facultyMemberUsers.length !== facultyMembers.length) {
+      return res.status(400).json({ message: 'One or more faculty members are invalid' });
+    }
+
+  const facultyMemberIds = facultyMemberUsers.map(user => user._id);
+    console.log("this is rt now");
+  console.log(facultyInChargeUser);
+    console.log(facultyMemberIds);
+
     const event = await Event.create({
       name,
       description,
       organizingBody,
-      facultyInCharge:teacher._id,
-
+      facultyInCharge: facultyInChargeUser._id,
+      facultyMembers: facultyMemberIds,
       
     
       venue,
