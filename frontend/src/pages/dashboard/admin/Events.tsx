@@ -32,7 +32,7 @@ interface Faculty {
 
 const AdminEvents: React.FC = () => {
   const user=getCurrentUser();
-  if (user?.role !== 'ADMIN' && user?.role !== 'admin') {
+  if ( user?.role !== 'admin') {
       return <Navigate to="/login" replace />;
   }
   const [events, setEvents] = useState<Event[]>([]);
@@ -62,7 +62,7 @@ const AdminEvents: React.FC = () => {
 
     const fetchFacultyMembers = async () => {
       try {
-        const response = await axios.get<Faculty[]>(`${origin}/api/users`);
+        const response = await axios.get<Faculty[]>(`${origin}/api/users/teacher`);
         setFacultyList(response.data);
         console.log(response.data)
       } catch (error) {

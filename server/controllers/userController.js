@@ -172,6 +172,17 @@ export const updateUserProfile = async (req, res) => {
   }
 };
 
+export const getteacher = async (req, res) => {
+  try {
+    const users = await User.find({ role: 'teacher' }).select('name email department');
+    res.json(users);
+    logger.info('Get teachers success',users);
+  } catch (error) {
+    logger.error('Get teachers error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+}
+
 export const getUsers = async (req, res) => {
   try {
     const users = await User.find().select('name email department role');
