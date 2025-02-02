@@ -1,28 +1,24 @@
-import React, { useState } from 'react';
-import { Plus } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import Button from '@/components/ui/Button';
-
-const mockUsers = [
-  {
-    id: '1',
-    name: 'John Doe',
-    email: 'john@example.com',
-    role: 'TEACHER',
-    department: 'Computer Science',
-    status: 'active'
-  },
-  {
-    id: '2',
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    role: 'STUDENT',
-    department: 'Electronics',
-    status: 'active'
-  }
-];
+import { Plus } from 'lucide-react';
 
 const AdminUsers: React.FC = () => {
-  const [users] = useState(mockUsers);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get('/api/users');
+        setUsers(response.data);
+        console.log('Users:', response.data);
+      } catch (error) {
+        console.error('Failed to fetch users:', error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -66,11 +62,7 @@ const AdminUsers: React.FC = () => {
                 <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   {user.department}
                 </td>
-                <td className="whitespace-nowrap px-3 py-4 text-sm">
-                  <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700">
-                    {user.status}
-                  </span>
-                </td>
+                
                 <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium">
                   <Button variant="ghost" size="sm">Edit</Button>
                 </td>
@@ -81,6 +73,6 @@ const AdminUsers: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
 export default AdminUsers;

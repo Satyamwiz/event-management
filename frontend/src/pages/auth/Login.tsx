@@ -42,6 +42,9 @@ const Login: React.FC = () => {
       <Button type="submit" className="w-full" isLoading={isSubmitting}>
         Sign in
       </Button>
+      <Button type="button" className="w-full" onClick={() => navigate('/register')}>
+        Register
+      </Button>
     </form>
   );
 };

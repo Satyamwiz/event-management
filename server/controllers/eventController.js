@@ -264,15 +264,17 @@ export const getEventStats = async (req, res) => {
   }
 };
 
-// Get event count
-export const eventCount = async (req, res) => {
+
+// Get event count by status
+export const eventCountByStatus = async (req, res) => {
   try {
-    console.log("weoking");
+    const activeCount = await Event.countDocuments({ status: 'active' });
+    const upcomingCount = await Event.countDocuments({ status: 'upcoming' });
+    const completedCount = await Event.countDocuments({ status: 'completed' });
     const count = await Event.countDocuments();
-    res.json({ count });
-    console.log(count);
+    res.json({ count:count,active: activeCount, upcoming: upcomingCount, completed: completedCount });
   } catch (error) {
-    logger.error('Get event count error:', error);
+    logger.error('Get event count by status error:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };

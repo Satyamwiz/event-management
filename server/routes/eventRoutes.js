@@ -8,14 +8,14 @@ import {
   updateEvent,
   deleteEvent,
   getEventStats,
-  eventCount
+  eventCountByStatus
 } from '../controllers/eventController.js';
 
 const router = express.Router();
 
 // Public routes
 router.get('/', getEvents);
-router.get('/counts', eventCount);
+router.get('/counts', eventCountByStatus);
 router.get('/:id', getEventById);
 
 

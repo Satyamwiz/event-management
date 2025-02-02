@@ -174,8 +174,10 @@ export const updateUserProfile = async (req, res) => {
 
 export const getUsers = async (req, res) => {
   try {
-    const users = await User.find({role:"teacher"}).select('name email department');
+    const users = await User.find().select('name email department role');
     res.json(users);
+    logger.info('Get users success',users);
+    
   } catch (error) {
     logger.error('Get users error:', error);
     res.status(500).json({ message: 'Server error' });
@@ -184,12 +186,10 @@ export const getUsers = async (req, res) => {
 
 export const userCount = async (req, res) => {
   try {
-
-    const count = await User.countDocuments();
-    res.json({ count });
-    console.log(count);
+    const users = await User.find().select('name email role department');
+    res.json(users);
   } catch (error) {
-    logger.error('User count error:', error);
+    logger.error('Error fetching users:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };

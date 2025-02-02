@@ -17,6 +17,7 @@ interface RegisterData {
  
 }
 
+
 const Register: React.FC = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<RegisterData>();

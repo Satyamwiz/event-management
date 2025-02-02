@@ -6,6 +6,8 @@ import Button from '@/components/ui/Button';
 import { formatDate } from '@/lib/utils';
 import cn from 'classnames';
 import { origin } from '@/lib/constants';
+import { Navigate } from 'react-router-dom';
+import { getCurrentUser } from '@/lib/auth';
 
 interface Event {
   id: string;
@@ -29,6 +31,10 @@ interface Faculty {
 }
 
 const AdminEvents: React.FC = () => {
+  const user=getCurrentUser();
+  if (user?.role !== 'ADMIN' && user?.role !== 'admin') {
+      return <Navigate to="/login" replace />;
+  }
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);

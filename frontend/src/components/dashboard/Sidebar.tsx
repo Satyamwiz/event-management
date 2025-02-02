@@ -10,8 +10,13 @@ const getNavigationByRole = (role: string) => {
     { name: 'Events', href: `/${role.toLowerCase()}/events`, icon: Calendar },
   ];
 
-  if (role === 'ADMIN') {
+  if (role === 'admin') {
     return [...baseNavigation, { name: 'Users', href: '/admin/users', icon: Users }];
+  }
+if (role === 'teacher') {
+  return baseNavigation.map((item) =>
+    item.name === 'Events' ? { ...item, name: 'My Events' } : item
+  );
   }
 
   return baseNavigation;

@@ -40,14 +40,23 @@ export const getCurrentUser = (): User | null => {
 
 export const getEventCount = async (): Promise<number> => {
   const { data } = await axios.get(`/api/events/counts`, { withCredentials: true });
-  return data.count;
+  return data;
 };
+
+
 
 // Get user count
 export const getUserCount = async (): Promise<number> => {
   const { data } = await axios.get(`${API_URL}/count`, { withCredentials: true });
-  return data.count;
+  const {count} = data;
+  return count;
 };
+
+export const getStudentCount = async (): Promise<number> => {
+  const { data } = await axios.get(`${API_URL}/count`, { withCredentials: true });
+  const {student} = data;
+  return student;
+}
 
 // Register function
 export const register = async (userData: RegisterData): Promise<User> => {
