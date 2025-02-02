@@ -1,10 +1,24 @@
-import React,{useEffect} from 'react';
+import React,{useEffect,useState} from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
-import { getCurrentUser } from '../../../lib/auth.ts';
+import { getCurrentUser,getUserCount,getEventCount } from '../../../lib/auth.ts';
 
 const AdminDashboard: React.FC = () => {
   const user = getCurrentUser();
+  const [usercount, setUserCount] = useState<number>(0);
+  const [eventcount, setEventCount] = useState<number>(0);
+  useEffect(() => {
+    const fetchUserCount = async () => {
+      const count = await getUserCount();
+      setUserCount(count);
+    };
+    const fetchEventCount = async () => {
+      const count = await getEventCount();
+      setEventCount(count);
+    };
+    fetchEventCount();
+    fetchUserCount();
+  }, []);
   console.log(user);
   // Add role check
   if (user?.role !== 'admin') {
@@ -35,9 +49,9 @@ const AdminDashboard: React.FC = () => {
                   <dt className="text-sm font-medium text-gray-500 truncate">
                     Total Users
                   </dt>
-                  <dd className="text-lg font-medium text-gray-900">
-                    100
-                  </dd>
+                    <dd className="text-lg font-medium text-gray-900">
+                    {usercount}
+                    </dd>
                 </dl>
               </div>
             </div>
@@ -58,7 +72,7 @@ const AdminDashboard: React.FC = () => {
                     Active Events
                   </dt>
                   <dd className="text-lg font-medium text-gray-900">
-                    25
+                    {eventcount}
                   </dd>
                 </dl>
               </div>
@@ -66,27 +80,7 @@ const AdminDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white overflow-hidden shadow rounded-lg">
-          <div className="p-5">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-              </div>
-              <div className="ml-5 w-0 flex-1">
-                <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Pending Approvals
-                  </dt>
-                  <dd className="text-lg font-medium text-gray-900">
-                    12
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
+        
       </div>
     </div>
   );

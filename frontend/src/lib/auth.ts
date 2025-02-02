@@ -38,6 +38,17 @@ export const getCurrentUser = (): User | null => {
   return storedUser ? JSON.parse(storedUser) : null;
 };
 
+export const getEventCount = async (): Promise<number> => {
+  const { data } = await axios.get(`/api/events/counts`, { withCredentials: true });
+  return data.count;
+};
+
+// Get user count
+export const getUserCount = async (): Promise<number> => {
+  const { data } = await axios.get(`${API_URL}/count`, { withCredentials: true });
+  return data.count;
+};
+
 // Register function
 export const register = async (userData: RegisterData): Promise<User> => {
   const { data } = await axios.post(`${API_URL}/register`, userData, { withCredentials: true });

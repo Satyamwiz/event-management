@@ -7,14 +7,18 @@ import {
   createEvent,
   updateEvent,
   deleteEvent,
-  getEventStats
+  getEventStats,
+  eventCount
 } from '../controllers/eventController.js';
 
 const router = express.Router();
 
 // Public routes
 router.get('/', getEvents);
+router.get('/counts', eventCount);
 router.get('/:id', getEventById);
+
+
 
 // Protected routes
 // router.use(protect);

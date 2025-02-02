@@ -263,3 +263,16 @@ export const getEventStats = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+// Get event count
+export const eventCount = async (req, res) => {
+  try {
+    console.log("weoking");
+    const count = await Event.countDocuments();
+    res.json({ count });
+    console.log(count);
+  } catch (error) {
+    logger.error('Get event count error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

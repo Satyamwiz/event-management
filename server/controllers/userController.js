@@ -181,3 +181,16 @@ export const getUsers = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+export const userCount = async (req, res) => {
+  try {
+
+    const count = await User.countDocuments();
+    res.json({ count });
+    console.log(count);
+  } catch (error) {
+    logger.error('User count error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
