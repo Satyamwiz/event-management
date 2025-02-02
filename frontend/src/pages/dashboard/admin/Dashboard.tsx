@@ -29,7 +29,7 @@ const AdminDashboard: React.FC = () => {
   }, []);
 
   // Role check: redirect non-admin users to the login page.
-  if (user?.role !== 'ADMIN' && user?.role !== 'admin') {
+  if ( user?.role !== 'admin') {
     return <Navigate to="/login" replace />;
   }
 

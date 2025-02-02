@@ -49,6 +49,7 @@ export const getEventCount = async (): Promise<number> => {
 export const getUserCount = async (): Promise<number> => {
   const { data } = await axios.get(`${API_URL}/count`, { withCredentials: true });
   const {count} = data;
+  console.log('User cereount:', data);
   return count;
 };
 

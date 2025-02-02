@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Calendar, Users } from 'lucide-react';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
-import { Navigate } from 'react-router-dom';
+
 import { getCurrentUser, getEventCount, getStudentCount } from '../../../lib/auth';
 
 interface Event {
@@ -25,10 +25,7 @@ const formatDate = (dateStr: string): string => {
 };
 
 const TeacherDashboard: React.FC = () => {
-  const user=getCurrentUser();
-    if (user?.role !== 'TEACHER' && user?.role !== 'teacher') {
-        return <Navigate to="/login" replace />;
-    }
+  
 
   const [eventCount, setEventCount] = useState<number>(0);
   const [studentCount, setStudentCount] = useState<number>(0);

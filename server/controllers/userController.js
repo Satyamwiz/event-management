@@ -186,8 +186,9 @@ export const getUsers = async (req, res) => {
 
 export const userCount = async (req, res) => {
   try {
-    const users = await User.find().select('name email role department');
-    res.json(users);
+    const count = await User.countDocuments();
+    const student=await User.countDocuments({role:"student"});
+    res.json({ count,student });
   } catch (error) {
     logger.error('Error fetching users:', error);
     res.status(500).json({ message: 'Server error' });
