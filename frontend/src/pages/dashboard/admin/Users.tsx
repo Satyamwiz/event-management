@@ -3,6 +3,7 @@ import axios from 'axios';
 import Button from '@/components/ui/Button';
 import { Plus } from 'lucide-react';
 
+
 const AdminUsers: React.FC = () => {
   const [users, setUsers] = useState([]);
 
@@ -19,6 +20,21 @@ const AdminUsers: React.FC = () => {
 
     fetchUsers();
   }, []);
+  
+  const handleDelete = async (userId) => {
+    const isConfirmed = window.confirm('Are you sure you want to delete this user?');
+    if (isConfirmed) {
+      try {
+        await axios.delete(`/api/users/${userId}`);
+        setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
+        alert('User deleted successfully.');
+      } catch (error) {
+        console.error('Failed to delete user:', error);
+        alert('Failed to delete user.');
+      }
+    }
+  };
+  
 
   return (
     <div className="space-y-6">
@@ -64,7 +80,7 @@ const AdminUsers: React.FC = () => {
                 </td>
                 
                 <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium">
-                  <Button variant="ghost" size="sm">Edit</Button>
+                  <Button variant="ghost" size="sm" className='text-red-600 hover:text-red-800'  onClick={() => handleDelete(user._id)}>DELETE</Button>
                 </td>
               </tr>
             ))}

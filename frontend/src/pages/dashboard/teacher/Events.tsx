@@ -3,6 +3,7 @@ import axios from 'axios';
 import { formatDate } from '@/lib/utils';
 import { origin } from '@/lib/constants';
 import { getCurrentUser } from '../../../lib/auth';
+import { Navigate } from 'react-router-dom';
 
 interface Event {
   id: string;
@@ -19,11 +20,16 @@ interface Event {
 }
 
 const AdminEvents: React.FC = () => {
-  const [events, setEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(true);
+  
 
   // Get the current logged-in user. (Assumes user object has email and role properties.)
   const user = getCurrentUser();
+  
+      if (user?.role !== 'TEACHER' && user?.role !== 'teacher') {
+          return <Navigate to="/login" replace />;
+      }
+      const [events, setEvents] = useState<Event[]>([]);
+    const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchEvents = async () => {

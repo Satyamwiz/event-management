@@ -8,7 +8,8 @@ import {
   getUserProfile,
   getUsers,
   updateUserProfile,
-  userCount
+  userCount,
+  deleteUser
 } from '../controllers/userController.js';
 
 const router = express.Router();
@@ -20,5 +21,6 @@ router.get('/profile', getUserProfile);
 router.put('/profile', protect, validateUser, updateUserProfile);
 // router.get('/', protect, admin, getUsers);
 router.get('/', getUsers);
+router.delete('/:id',  deleteUser);
 
 export default router;

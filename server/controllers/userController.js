@@ -194,3 +194,56 @@ export const userCount = async (req, res) => {
   }
 };
 
+export const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    console.log("User found");
+    await user.remove();
+    logger.info('User removed:', user);
+    res.json({ message: 'User removed' });
+  } catch (error) {
+    logger.error('Delete user error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+export const addUser = async (req, res) => {
+  try {
+    const { name, email, password, role, department, studentId, year, googleCalendarId } = req.body;
+
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({ message: 'Email already registered' });
+    }
+
+    const newUser = new User({
+      name,
+      email,
+      password,
+      role,
+      department,
+      studentId,
+      year,
+      googleCalendarId
+    });
+
+    const savedUser = await newUser.save();
+
+    res.status(201).json({
+      _id: savedUser._id,
+      name: savedUser.name,
+      email: savedUser.email,
+      role: savedUser.role,
+      department: savedUser.department,
+      studentId: savedUser.studentId,
+      year: savedUser.year,
+      googleCalendarId: savedUser.googleCalendarId
+    });
+  } catch (error) {
+    logger.error('Add user error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
