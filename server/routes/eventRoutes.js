@@ -21,12 +21,12 @@ router.get('/:id', getEventById);
 
 
 // Protected routes
-// router.use(protect);
+router.use(protect);
 
 
 // Routes requiring admin or faculty privileges
 // router.post('/', authorize(['admin', 'teacher']), upload.single('banner'), createEvent);
-router.put('/:id', authorize(['admin', 'teacher']), upload.single('banner'), updateEvent);
+router.put('/:id', authorize(['admin', 'teacher']), updateEvent);
 router.delete('/:id', authorize(['admin']), deleteEvent);
 router.post('/', createEvent);
 

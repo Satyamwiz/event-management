@@ -13,13 +13,17 @@ import {
   getteacher
 } from '../controllers/userController.js';
 
+
 const router = express.Router();
-router.get('/count', userCount);
-router.post('/register', validateUser, registerUser);
 router.post('/login', loginUser);
+
+router.post('/register', validateUser, registerUser);
+// router.use(protect);
+router.get('/count', userCount);
 router.post('/logout', logoutUser);
+
 router.get('/profile', getUserProfile);
-router.put('/profile', protect, validateUser, updateUserProfile);
+router.put('/profile'. validateUser, updateUserProfile);
 // router.get('/', protect, admin, getUsers);
 router.get('/', getUsers);
 router.get('/teacher',getteacher);

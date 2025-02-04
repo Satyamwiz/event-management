@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
 import winston from 'winston';
+import { generateToken } from '../utils/generatewt.js';
 
 export const registerUser = async (req, res) => {
   console.log("hello");
@@ -89,42 +90,86 @@ const logger = winston.createLogger({
   ]
 });
 
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '30d',
-  });
-};
+// const generateToken = (id) => {
+//   return jwt.sign({ id }, process.env.JWT_SECRET, {
+//     expiresIn: '30d',
+//   });
+// };
 
 
+// export const loginUser = async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+
+//     const user = await User.findOne({ email });
+//     if (!user || !(await user.matchPassword(password))) {
+//       return res.status(401).json({ message: 'Invalid email or password' });
+//     }
+//     console.log("echeck1");
+//     const token = generateToken(user._id);
+//     console.log(token);
+//     console.log("reached at 1");
+//     res.cookie('token', token, {
+//       httpOnly: true,
+//       secure: process.env.NODE_ENV === 'production',
+//       sameSite: 'none',
+//       maxAge: 30 * 24 * 60 * 60 * 1000
+//     });
+
+//     console.log("reached2")
+//     res.json({
+//       _id: user._id,
+//       name: user.name,
+//       email: user.email,
+//       role: user.role
+//     });
+//   } catch (error) {
+//     logger.error('Login user error:', error);
+//     res.status(500).json({ message: 'Server error' });
+//   }
+// };
 export const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+      const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
-    if (!user || !(await user.matchPassword(password))) {
-      return res.status(401).json({ message: 'Invalid email or password' });
-    }
-    console.log("echeck1");
-    const token = generateToken(user._id);
-    console.log("reached at 1");
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 30 * 24 * 60 * 60 * 1000
-    });
-    console.log("reached2")
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role
-    });
+      const user = await User.findOne({ email });
+      if (!user) {
+          console.log("User not found");
+          return res.status(401).json({ message: 'Invalid email or password' });
+      }
+
+      const isMatch = await user.matchPassword(password);
+      if (!isMatch) {
+          console.log("Password incorrect");
+          return res.status(401).json({ message: 'Invalid email or password' });
+      }
+
+      console.log("User authenticated successfully");
+
+      const token = generateToken(user._id,res);
+      console.log("Generated token:", token);
+
+      res.cookie('token', token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'none',
+          maxAge: 30 * 24 * 60 * 60 * 1000
+      });
+      
+      console.log("Cookie set successfully");
+
+      res.json({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role
+      });
   } catch (error) {
-    logger.error('Login user error:', error);
-    res.status(500).json({ message: 'Server error' });
+      console.error('Login user error:', error);  // Use console.error for better debugging
+      res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 export const logoutUser = (req, res) => {
   res.cookie('token', '', {
